@@ -10,7 +10,7 @@ namespace AppWorkshop
 
 		Entry phoneNumberText; //tipo Entry é um campo onde é adicionado o texto
 		Button translateButton; //botao pra fazer a acao de enviar o numero de telefone
-		Button callButton; //
+		Button callButton; //botao que vai fazer a ligacao
 		String translatedNumber; //vai exibir o número q vai ligar
 
 		public MainPage ()
@@ -24,23 +24,23 @@ namespace AppWorkshop
 
 			panel.Children.Add(new Label
 			{
-				Text = "Digite aqui a phoneword:",
+				Text = "Digite o número ou nome do telefone:",
 				FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
 			});
 
 			panel.Children.Add(phoneNumberText = new Entry
 			{
-				Text = "1-855-XAMARIN",
+				Text = "1Elian2Jao3Tobi",
 			});
 
 			panel.Children.Add(translateButton = new Button
 			{
-				Text = "Translate"
+				Text = "Traduzir"
 			});
 
 			panel.Children.Add(callButton = new Button
 			{
-				Text = "Call",
+				Text = "Ligar para",
 				IsEnabled = false
 			});
 
@@ -52,24 +52,24 @@ namespace AppWorkshop
         async void OnCall(object sender, EventArgs e) //metodo que é chamado pelo botao //async pra q a tela nao fique travada  
         {
 			if(await this.DisplayAlert(
-				"Dial a number",
-				"Would you like to call " + translatedNumber + "?",
-				"Yes", "No")){
+				"Ligar para número",
+				"Você quer ligar para " + translatedNumber + "?",
+				"Sim", "Não")){
 				try
 				{
 					PhoneDialer.Open(translatedNumber);
 				}
 				catch(ArgumentNullException)
 				{
-					await DisplayAlert("Unable to dial", "Phone number was not valid.", "Ok");
+					await DisplayAlert("Erro", "Número de telefone inválido.", "Ok");
 				}
                 catch (FeatureNotSupportedException)
                 {
-                    await DisplayAlert("Unable to dial", "Phone dialing not supported.", "Ok");
+                    await DisplayAlert("Erro", "Ligação não suportada para este dispositivo.", "Ok");
                 }
                 catch (Exception)
                 {
-                    await DisplayAlert("Unable to dial", "Phone dialing failed.", "Ok");
+                    await DisplayAlert("Erro", "Ligação falhou.", "Ok");
                 }
             }
         }
@@ -82,12 +82,12 @@ namespace AppWorkshop
 			if (!String.IsNullOrEmpty(translatedNumber))
 			{
 				callButton.IsEnabled = true;
-				callButton.Text = "Call " + translatedNumber;
+				callButton.Text = "Ligar " + translatedNumber;
 			}
 			else
 			{
                 callButton.IsEnabled = false;
-                callButton.Text = "Call";
+                callButton.Text = "Ligar";
             }
         }
     }
